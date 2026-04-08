@@ -676,6 +676,10 @@
                         <input type="checkbox" value="aging" onchange="toggleConcern('aging', this)">
                         <span>Aging, wrinkles</span>
                     </label>
+                    <label class="checkbox-option" id="concern-menopause">
+                        <input type="checkbox" value="menopause" onchange="toggleConcern('menopause', this)">
+                        <span>Menopause/Collagen loss</span>
+                    </label>
                     <label class="checkbox-option" id="concern-sensitive">
                         <input type="checkbox" value="sensitive" onchange="toggleConcern('sensitive', this)">
                         <span>Sensitive</span>
@@ -844,20 +848,22 @@
         
         // Product database
         const products = [
-            { id: 1, name: 'Hydrating Serum', category: 'Serum', concerns: ['dryness', 'hydration', 'dullness'], skinTypes: ['dry', 'normal', 'combination'], ageRanges: ['all'], price: 45 },
-            { id: 2, name: 'Acne Control Treatment', category: 'Treatment', concerns: ['acne', 'oily'], skinTypes: ['oily', 'combination'], ageRanges: ['18-25', '26-35', '36-45'], price: 38 },
-            { id: 3, name: 'Anti-Aging Retinol Cream', category: 'Moisturizer', concerns: ['aging', 'wrinkles'], skinTypes: ['dry', 'normal', 'combination'], ageRanges: ['36-45', '46-55', '56-65', '66+'], price: 68 },
-            { id: 4, name: 'Vitamin C Brightening Serum', category: 'Serum', concerns: ['dullness', 'aging'], skinTypes: ['all'], ageRanges: ['all'], price: 52 },
-            { id: 5, name: 'Gentle Soothing Cleanser', category: 'Cleanser', concerns: ['sensitive', 'redness', 'dry-itchy'], skinTypes: ['sensitive', 'dry', 'normal'], ageRanges: ['all'], price: 28 },
-            { id: 6, name: 'Oil Control Mattifying Gel', category: 'Moisturizer', concerns: ['oily', 'acne'], skinTypes: ['oily', 'combination'], ageRanges: ['18-25', '26-35', '36-45'], price: 35 },
-            { id: 7, name: 'Age Defense Night Cream', category: 'Treatment', concerns: ['aging', 'dryness'], skinTypes: ['normal', 'dry', 'combination'], ageRanges: ['46-55', '56-65', '66+'], price: 72 },
-            { id: 8, name: 'Calming Redness Relief Serum', category: 'Serum', concerns: ['redness', 'sensitive'], skinTypes: ['sensitive', 'all'], ageRanges: ['all'], price: 42 },
-            { id: 9, name: 'Deep Hydration Moisture Boost', category: 'Moisturizer', concerns: ['dryness', 'hydration'], skinTypes: ['dry', 'combination'], ageRanges: ['all'], price: 48 },
-            { id: 10, name: 'Firming Peptide Complex', category: 'Serum', concerns: ['aging'], skinTypes: ['all'], ageRanges: ['36-45', '46-55', '56-65', '66+'], price: 78 },
-            { id: 11, name: 'Nourishing Facial Oil', category: 'Oil', concerns: ['dryness', 'aging'], skinTypes: ['dry', 'normal'], ageRanges: ['36-45', '46-55', '56-65', '66+'], price: 55 },
-            { id: 12, name: 'Blemish Control Spot Treatment', category: 'Treatment', concerns: ['acne'], skinTypes: ['oily', 'combination'], ageRanges: ['18-25', '26-35', '36-45'], price: 32 },
-            { id: 13, name: 'Barrier Repair Cream', category: 'Moisturizer', concerns: ['dry-itchy', 'sensitive', 'redness'], skinTypes: ['sensitive', 'dry'], ageRanges: ['all'], price: 58 },
-            { id: 14, name: 'Radiance Boosting Essence', category: 'Essence', concerns: ['dullness', 'hydration'], skinTypes: ['all'], ageRanges: ['all'], price: 46 }
+            { id: 1, name: 'Hydrating Serum', category: 'Serum', concerns: ['dryness', 'hydration', 'dullness'], skinTypes: ['dry', 'normal', 'combination'], ageRanges: ['all'], price: 45, url: null },
+            { id: 2, name: 'Acne Control Treatment', category: 'Treatment', concerns: ['acne', 'oily'], skinTypes: ['oily', 'combination'], ageRanges: ['18-25', '26-35', '36-45'], price: 38, url: null },
+            { id: 3, name: 'Anti-Aging Retinol Cream', category: 'Moisturizer', concerns: ['aging', 'wrinkles', 'menopause'], skinTypes: ['dry', 'normal', 'combination'], ageRanges: ['36-45', '46-55', '56-65', '66+'], price: 68, url: null },
+            { id: 4, name: 'Vitamin C Brightening Serum', category: 'Serum', concerns: ['dullness', 'aging'], skinTypes: ['all'], ageRanges: ['all'], price: 52, url: null },
+            { id: 5, name: 'Gentle Soothing Cleanser', category: 'Cleanser', concerns: ['sensitive', 'redness', 'dry-itchy'], skinTypes: ['sensitive', 'dry', 'normal'], ageRanges: ['all'], price: 28, url: null },
+            { id: 6, name: 'Oil Control Mattifying Gel', category: 'Moisturizer', concerns: ['oily', 'acne'], skinTypes: ['oily', 'combination'], ageRanges: ['18-25', '26-35', '36-45'], price: 35, url: null },
+            { id: 7, name: 'Age Defense Night Cream', category: 'Treatment', concerns: ['aging', 'dryness', 'menopause'], skinTypes: ['normal', 'dry', 'combination'], ageRanges: ['46-55', '56-65', '66+'], price: 72, url: null },
+            { id: 8, name: 'Calming Redness Relief Serum', category: 'Serum', concerns: ['redness', 'sensitive'], skinTypes: ['sensitive', 'all'], ageRanges: ['all'], price: 42, url: null },
+            { id: 9, name: 'Deep Hydration Moisture Boost', category: 'Moisturizer', concerns: ['dryness', 'hydration'], skinTypes: ['dry', 'combination'], ageRanges: ['all'], price: 48, url: null },
+            { id: 10, name: 'Firming Peptide Complex', category: 'Serum', concerns: ['aging', 'menopause'], skinTypes: ['all'], ageRanges: ['36-45', '46-55', '56-65', '66+'], price: 78, url: null },
+            { id: 11, name: 'Nourishing Facial Oil', category: 'Oil', concerns: ['dryness', 'aging'], skinTypes: ['dry', 'normal'], ageRanges: ['36-45', '46-55', '56-65', '66+'], price: 55, url: null },
+            { id: 12, name: 'Blemish Control Spot Treatment', category: 'Treatment', concerns: ['acne'], skinTypes: ['oily', 'combination'], ageRanges: ['18-25', '26-35', '36-45'], price: 32, url: null },
+            { id: 13, name: 'Barrier Repair Cream', category: 'Moisturizer', concerns: ['dry-itchy', 'sensitive', 'redness'], skinTypes: ['sensitive', 'dry'], ageRanges: ['all'], price: 58, url: null },
+            { id: 14, name: 'Radiance Boosting Essence', category: 'Essence', concerns: ['dullness', 'hydration'], skinTypes: ['all'], ageRanges: ['all'], price: 46, url: null },
+            { id: 15, name: 'Phyco Health Collagen Restore', category: 'Treatment', concerns: ['menopause', 'aging', 'wrinkles'], skinTypes: ['all'], ageRanges: ['46-55', '56-65', '66+'], price: 85, url: 'https://www.phycohealth.com/' },
+            { id: 16, name: 'Phyco Health Menopause Support Serum', category: 'Serum', concerns: ['menopause', 'dryness', 'aging'], skinTypes: ['dry', 'normal', 'combination'], ageRanges: ['46-55', '56-65', '66+'], price: 92, url: 'https://www.phycohealth.com/' }
         ];
         
         let currentStep = 0;
@@ -993,10 +999,15 @@
             // Add age-based concerns
             let effectiveConcerns = [...userData.concerns];
             
-            // Auto-add aging concern for users 46+
+            // Auto-add aging and menopause concerns for users 46+
             const ageValue = parseInt(userData.age.split('-')[0]) || 0;
-            if (ageValue >= 46 && !effectiveConcerns.includes('aging')) {
-                effectiveConcerns.push('aging');
+            if (ageValue >= 46) {
+                if (!effectiveConcerns.includes('aging')) {
+                    effectiveConcerns.push('aging');
+                }
+                if (!effectiveConcerns.includes('menopause')) {
+                    effectiveConcerns.push('menopause');
+                }
             }
             
             const matchedProducts = products.map(product => {
@@ -1044,6 +1055,11 @@
                     .map(c => `<span class="concern-tag">✓ ${c}</span>`)
                     .join('');
                 
+                // Add View Product button if URL exists
+                const productButton = product.url 
+                    ? `<a href="${product.url}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="margin-top: 15px; width: 100%; display: block; text-decoration: none; text-align: center;">View Product</a>`
+                    : `<button class="btn btn-primary" style="margin-top: 15px; width: 100%;">Add to Cart</button>`;
+                
                 card.innerHTML = `
                     <div class="match-badge">${index === 0 ? '⭐ Top Match' : `#${index + 1} Match`} - ${product.matchScore}% Match</div>
                     <div class="product-header">
@@ -1054,7 +1070,7 @@
                         <div class="product-price">$${product.price}</div>
                     </div>
                     <div class="product-concerns">${concernTags}</div>
-                    <button class="btn btn-primary" style="margin-top: 15px; width: 100%;">Add to Cart</button>
+                    ${productButton}
                 `;
                 
                 productList.appendChild(card);
