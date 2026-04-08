@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Dermacolab - Skincare Consultation</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+            padding: 15px;
+            line-height: 1.6;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        }
+        
+        @media (min-width: 768px) {
+            body {
+                padding: 30px 20px;
+            }
+            .container {
+                max-width: 600px;
+                padding: 25px;
+                border-radius: 20px;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 900px;
+                padding: 20px;
+            }
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .header h1 {
+            color: #1a1a1a;
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        
+        .header p {
+            color: #6c757d;
+            font-size: 14px;
+            font-weight: 400;
+        }
+        
+        @media (min-width: 768px) {
+            .header {
+                margin-bottom: 25px;
+                padding-bottom: 25px;
+            }
+            .header h1 {
+                font-size: 32px;
+                margin-bottom: 10px;
+            }
+            .header p {
+                font-size: 16px;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .header {
+                margin-bottom: 30px;
+                padding-bottom: 30px;
+            }
+            .header h1 {
+                font-size: 24px;
+                margin-bottom: 12px;
+            }
+            .header p {
+                font-size: 17px;
+            }
+        }
+        
+        .progress-bar {
+            background: #f1f3f5;
+            height: 6px;
+            border-radius: 10px;
+            margin-bottom: 35px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            height: 100%;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+        }
+        
+        .step-indicator {
+            text-align: center;
+            color: #6c757d;
+            margin-bottom: 25px;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+        
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+        
+        .question-group {
+            margin-bottom: 25px;
+        }
+        
+        .question-label {
+            font-size: 19px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            display: block;
+            letter-spacing: -0.3px;
+        }
+        
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+        
+        .option-btn {
+            padding: 18px 20px;
+            border: 2px solid #e9ecef;
+            background: #ffffff;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            color: #495057;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        
+        .option-btn:hover {
+            border-color: #6366f1;
+            background: #fef2f2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+        }
+        
+        .option-btn.selected {
+            border-color: #6366f1;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .checkbox-option {
+            padding: 14px 16px;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #495057;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        
+        .checkbox-option:hover {
+            border-color: #6366f1;
+            background: #fef2f2;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(99, 102, 241, 0.1);
+        }
+        
+        .checkbox-option input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            accent-color: #6366f1;
+        }
+        
+        .checkbox-option.selected {
+            border-color: #6366f1;
+            background: #fef2f2;
+            box-shadow: 0 3px 10px rgba(99, 102, 241, 0.15);
+        }
+        
+        .upload-area {
+            border: 3px dashed #dee2e6;
+            border-radius: 16px;
+            padding: 60px 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #f8f9fa;
+        }
+        
+        .upload-area:hover {
+            border-color: #6366f1;
+            background: #fef2f2;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.12);
+        }
+        
+        .upload-area.has-image {
+            border-style: solid;
+            border-color: #6366f1;
+            background: white;
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.15);
+        }
+        
+        .upload-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            filter: grayscale(0.3);
+        }
+        
+        .preview-image {
+            max-width: 320px;
+            max-height: 320px;
+            border-radius: 16px;
+            margin: 24px auto;
+            display: none;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        
+        .preview-image.show {
+            display: block;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 16px;
+            margin-top: 40px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 0.2px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+        }
+        
+        .btn-primary:active:not(:disabled) {
+            transform: translateY(0);
+        }
+        
+        .btn-primary:disabled {
+            background: linear-gradient(135deg, #cbd5e1, #94a3b8);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #495057;
+            border: 2px solid #e9ecef;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        
+        .btn-secondary:hover {
+            border-color: #6366f1;
+            color: #6366f1;
+            background: #fef2f2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+        }
+        
+        .product-card {
+            border: 2px solid #f1f3f5;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        
+        .product-card:hover {
+            box-shadow: 0 8px 28px rgba(0,0,0,0.1);
+            transform: translateY(-4px);
+            border-color: #e9ecef;
+        }
+        
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 14px;
+        }
+        
+        .product-title {
+            font-size: 21px;
+            font-weight: 700;
+            color: #1a1a1a;
+            letter-spacing: -0.3px;
+            line-height: 1.3;
+        }
+        
+        .product-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: #6366f1;
+            letter-spacing: -0.5px;
+        }
+        
+        .match-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.25);
+        }
+        
+        .product-category {
+            color: #6c757d;
+            font-size: 14px;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+        
+        .product-concerns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        
+        .concern-tag {
+            background: linear-gradient(135deg, #d4f4dd, #c3f0cf);
+            color: #1e7e34;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid #b8e6c4;
+        }
+        
+        .profile-summary {
+            background: linear-gradient(135deg, #fef2f2, #fce7f3);
+            border: 2px solid #e9ecef;
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 35px;
+            box-shadow: 0 2px 12px rgba(99, 102, 241, 0.08);
+        }
+        
+        .profile-summary h3 {
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+        
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+        
+        .profile-item {
+            font-size: 14px;
+        }
+        
+        .profile-item strong {
+            display: block;
+            color: #6c757d;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .profile-item span {
+            color: #1a1a1a;
+            font-size: 17px;
+            font-weight: 600;
+        }
+        
+        .welcome-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin: 40px 0;
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, #fef2f2, #fce7f3);
+            padding: 32px 28px;
+            border-radius: 16px;
+            text-align: center;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.06);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.15);
+            border-color: #6366f1;
+        }
+        
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 14px;
+        }
+        
+        .feature-card h3 {
+            color: #1a1a1a;
+            font-size: 17px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+        }
+        
+        .feature-card p {
+            color: #6c757d;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .selected-count {
+            background: linear-gradient(135deg, #f1f3f5, #e9ecef);
+            padding: 14px 20px;
+            border-radius: 12px;
+            text-align: center;
+            color: #495057;
+            font-size: 15px;
+            font-weight: 600;
+            border: 2px solid #e9ecef;
+            margin-top: 20px;
+        }
+        
+        input[type="file"] {
+            display: none;
+        }
+        
+        h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1a1a;
+            letter-spacing: -0.5px;
+        }
+        
+        h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Dermacolab</h1>
+            <p>Find your perfect skincare products in 4 easy steps</p>
+        </div>
+        
+        <div class="step-indicator" id="stepIndicator"></div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+        
+        <!-- STEP 0: Welcome -->
+        <div id="step0" class="section active">
+            <h2 style="text-align: center; margin-bottom: 30px;">Welcome to Your Personalized Skincare Journey</h2>
+            
+            <div class="welcome-grid">
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); width: 80px; height: 80px; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="8" r="4" stroke="white" stroke-width="2"/>
+                            <path d="M6 21C6 17.6863 8.68629 15 12 15C15.3137 15 18 17.6863 18 21" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3>Demographics</h3>
+                    <p>Tell us about yourself</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); width: 80px; height: 80px; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>Skin Analysis</h3>
+                    <p>Share your concerns</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); width: 80px; height: 80px; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="3" width="18" height="18" rx="2" stroke="white" stroke-width="2"/>
+                            <circle cx="8.5" cy="8.5" r="1.5" fill="white"/>
+                            <path d="M21 15l-5-5L5 21" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>Face Scan</h3>
+                    <p>Upload your photo</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); width: 80px; height: 80px; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 13l4 4L19 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>Perfect Match</h3>
+                    <p>Get recommendations</p>
+                </div>
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="goToStep(1)">Start Consultation</button>
+            </div>
+        </div>
+        
+        <!-- STEP 1: Demographics -->
+        <div id="step1" class="section">
+            <h2 style="margin-bottom: 30px;">Tell Us About Yourself</h2>
+            
+            <div class="question-group">
+                <label class="question-label">What's your age range?</label>
+                <div class="options-grid">
+                    <button class="option-btn" onclick="selectOption('age', '18-25', this)">18-25</button>
+                    <button class="option-btn" onclick="selectOption('age', '26-35', this)">26-35</button>
+                    <button class="option-btn" onclick="selectOption('age', '36-45', this)">36-45</button>
+                    <button class="option-btn" onclick="selectOption('age', '46-55', this)">46-55</button>
+                    <button class="option-btn" onclick="selectOption('age', '56-65', this)">56-65</button>
+                    <button class="option-btn" onclick="selectOption('age', '66+', this)">66+</button>
+                </div>
+            </div>
+            
+            <div class="question-group">
+                <label class="question-label">Gender</label>
+                <div class="options-grid">
+                    <button class="option-btn" onclick="selectOption('gender', 'male', this)">Male</button>
+                    <button class="option-btn" onclick="selectOption('gender', 'female', this)">Female</button>
+                    <button class="option-btn" onclick="selectOption('gender', 'non-binary', this)">Non-Binary</button>
+                    <button class="option-btn" onclick="selectOption('gender', 'prefer-not-to-say', this)">Prefer Not to Say</button>
+                </div>
+            </div>
+            
+            <div class="question-group">
+                <label class="question-label">Which state do you live in?</label>
+                <input type="text" id="stateInput" placeholder="Enter your state" 
+                    style="width: 100%; padding: 16px 20px; border: 2px solid #e9ecef; border-radius: 12px; font-size: 15px; font-family: 'Inter', sans-serif; transition: all 0.25s; box-shadow: 0 1px 3px rgba(0,0,0,0.04);"
+                    onfocus="this.style.borderColor='#6366f1'; this.style.background='#f8f9ff';"
+                    onblur="this.style.borderColor='#e9ecef'; this.style.background='white';"
+                    oninput="userData.state = this.value; checkStep1Validation();">
+            </div>
+            
+            <div class="question-group">
+                <label class="question-label">What's your skin type?</label>
+                <div class="options-grid">
+                    <button class="option-btn" onclick="selectOption('skinType', 'dry', this)">Dry</button>
+                    <button class="option-btn" onclick="selectOption('skinType', 'oily', this)">Oily</button>
+                    <button class="option-btn" onclick="selectOption('skinType', 'combination', this)">Combination</button>
+                    <button class="option-btn" onclick="selectOption('skinType', 'sensitive', this)">Sensitive</button>
+                </div>
+            </div>
+            
+            <div class="question-group">
+                <label class="question-label">What's your skin tone?</label>
+                <div class="options-grid">
+                    <button class="option-btn" onclick="selectOption('skinTone', 'light', this)">Light</button>
+                    <button class="option-btn" onclick="selectOption('skinTone', 'medium', this)">Medium</button>
+                    <button class="option-btn" onclick="selectOption('skinTone', 'tan', this)">Tan</button>
+                    <button class="option-btn" onclick="selectOption('skinTone', 'dark', this)">Dark</button>
+                    <button class="option-btn" onclick="selectOption('skinTone', 'deep', this)">Deep</button>
+                </div>
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="goToStep(0)">Back</button>
+                <button class="btn btn-primary" id="step1Next" onclick="goToStep(2)" disabled>Continue</button>
+            </div>
+        </div>
+        
+        <!-- STEP 2: Skin Concerns -->
+        <div id="step2" class="section">
+            <h2 style="margin-bottom: 30px;">Skin quality and description</h2>
+            
+            <div class="question-group">
+                <label class="question-label">Describe your skin sensitivity</label>
+                <div class="options-grid">
+                    <button class="option-btn" onclick="selectOption('sensitivity', 'very-sensitive', this)">Very Sensitive</button>
+                    <button class="option-btn" onclick="selectOption('sensitivity', 'somewhat-sensitive', this)">Somewhat, reacts occasionally to heat/products</button>
+                    <button class="option-btn" onclick="selectOption('sensitivity', 'not-sensitive', this)">Not Sensitive</button>
+                </div>
+            </div>
+            
+            <div class="question-group">
+                <label class="question-label">How much sun exposure do you have?</label>
+                <div class="options-grid">
+                    <button class="option-btn" onclick="selectOption('sunExposure', 'maximum', this)">As much as possible</button>
+                    <button class="option-btn" onclick="selectOption('sunExposure', 'protected', this)">I enjoy sunshine but use protection</button>
+                    <button class="option-btn" onclick="selectOption('sunExposure', 'limited', this)">I limit my exposure</button>
+                </div>
+            </div>
+            
+            <div class="question-group">
+                <label class="question-label">What are your skin concerns?</label>
+                <p style="color: #6c757d; margin-bottom: 20px; font-size: 15px;">Select all that apply</p>
+                <div class="options-grid">
+                    <label class="checkbox-option" id="concern-acne">
+                        <input type="checkbox" value="acne" onchange="toggleConcern('acne', this)">
+                        <span>Acne</span>
+                    </label>
+                    <label class="checkbox-option" id="concern-aging">
+                        <input type="checkbox" value="aging" onchange="toggleConcern('aging', this)">
+                        <span>Aging, wrinkles</span>
+                    </label>
+                    <label class="checkbox-option" id="concern-sensitive">
+                        <input type="checkbox" value="sensitive" onchange="toggleConcern('sensitive', this)">
+                        <span>Sensitive</span>
+                    </label>
+                    <label class="checkbox-option" id="concern-dryness">
+                        <input type="checkbox" value="dryness" onchange="toggleConcern('dryness', this)">
+                        <span>Dryness</span>
+                    </label>
+                    <label class="checkbox-option" id="concern-hydration">
+                        <input type="checkbox" value="hydration" onchange="toggleConcern('hydration', this)">
+                        <span>Hydration</span>
+                    </label>
+                    <label class="checkbox-option" id="concern-dullness">
+                        <input type="checkbox" value="dullness" onchange="toggleConcern('dullness', this)">
+                        <span>Dullness or uneven complexion</span>
+                    </label>
+                    <label class="checkbox-option" id="concern-dry-itchy">
+                        <input type="checkbox" value="dry-itchy" onchange="toggleConcern('dry-itchy', this)">
+                        <span>Dry, itchy, and irrated skin</span>
+                    </label>
+                    <label class="checkbox-option" id="concern-redness">
+                        <input type="checkbox" value="redness" onchange="toggleConcern('redness', this)">
+                        <span>Redness and flushing</span>
+                    </label>
+                    <label class="checkbox-option" id="concern-oily">
+                        <input type="checkbox" value="oily" onchange="toggleConcern('oily', this)">
+                        <span>Excess of oil (Oily skin)</span>
+                    </label>
+                    <label class="checkbox-option" id="concern-none">
+                        <input type="checkbox" value="none" onchange="toggleConcern('none', this)">
+                        <span>None of these</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="selected-count" id="concernCount">0 concerns selected</div>
+            
+            <div class="question-group">
+                <label class="question-label">Describe your beauty routine</label>
+                <div class="options-grid">
+                    <button class="option-btn" onclick="selectOption('beautyRoutine', 'quick-simple', this)">Quick and simple</button>
+                    <button class="option-btn" onclick="selectOption('beautyRoutine', 'low-maintenance', this)">Low maintenance</button>
+                    <button class="option-btn" onclick="selectOption('beautyRoutine', 'dedicated', this)">I dedicate a lot of time to my skincare</button>
+                </div>
+            </div>
+            
+            <div class="question-group">
+                <label class="question-label">What is your product preference?</label>
+                <div class="options-grid">
+                    <button class="option-btn" onclick="selectOption('productPreference', 'lightweight', this)">Lightweight lotion/gel</button>
+                    <button class="option-btn" onclick="selectOption('productPreference', 'creamy', this)">Creamy</button>
+                    <button class="option-btn" onclick="selectOption('productPreference', 'rich-thick', this)">Rich thick</button>
+                    <button class="option-btn" onclick="selectOption('productPreference', 'oil', this)">Oil</button>
+                </div>
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="goToStep(1)">Back</button>
+                <button class="btn btn-primary" id="step2Next" onclick="goToStep(3)" disabled>Continue</button>
+            </div>
+        </div>
+        
+        <!-- STEP 3: Face Scan -->
+        <div id="step3" class="section">
+            <h2 style="margin-bottom: 30px;">Upload Your Photo for AI Analysis</h2>
+            
+            <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                <div class="upload-icon">📸</div>
+                <h3 style="color: #333; margin-bottom: 10px;">Click to Upload Photo</h3>
+                <p style="color: #666; font-size: 14px;">For best results, use a clear front-facing photo in good lighting</p>
+                <input type="file" id="fileInput" accept="image/*" onchange="handleImageUpload(event)">
+                <img id="previewImage" class="preview-image" alt="Preview">
+            </div>
+            
+            <div style="background: #f0f0f0; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                <h4 style="color: #333; margin-bottom: 10px;">🔒 Privacy & Security</h4>
+                <ul style="color: #666; font-size: 14px; padding-left: 20px;">
+                    <li>Your photos are encrypted and secure</li>
+                    <li>Used only for product recommendations</li>
+                    <li>Deleted after analysis</li>
+                    <li>Never shared with third parties</li>
+                </ul>
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="goToStep(2)">Back</button>
+                <button class="btn btn-primary" id="step3Next" onclick="goToStep(4)" disabled>See My Matches</button>
+            </div>
+        </div>
+        
+        <!-- STEP 4: Results -->
+        <div id="step4" class="section">
+            <h2 style="text-align: center; margin-bottom: 30px;">🎉 Your Perfect Skincare Matches!</h2>
+            
+            <div class="profile-summary">
+                <h3>Your Skin Profile</h3>
+                <div class="profile-grid">
+                    <div class="profile-item">
+                        <strong>Age Range</strong>
+                        <span id="summaryAge">-</span>
+                    </div>
+                    <div class="profile-item">
+                        <strong>Gender</strong>
+                        <span id="summaryGender">-</span>
+                    </div>
+                    <div class="profile-item">
+                        <strong>State</strong>
+                        <span id="summaryState">-</span>
+                    </div>
+                    <div class="profile-item">
+                        <strong>Skin Type</strong>
+                        <span id="summarySkinType">-</span>
+                    </div>
+                    <div class="profile-item">
+                        <strong>Skin Tone</strong>
+                        <span id="summarySkinTone">-</span>
+                    </div>
+                    <div class="profile-item">
+                        <strong>Sensitivity</strong>
+                        <span id="summarySensitivity">-</span>
+                    </div>
+                    <div class="profile-item">
+                        <strong>Sun Exposure</strong>
+                        <span id="summarySunExposure">-</span>
+                    </div>
+                    <div class="profile-item">
+                        <strong>Beauty Routine</strong>
+                        <span id="summaryBeautyRoutine">-</span>
+                    </div>
+                    <div class="profile-item">
+                        <strong>Product Preference</strong>
+                        <span id="summaryProductPreference">-</span>
+                    </div>
+                    <div class="profile-item">
+                        <strong>Top Concerns</strong>
+                        <span id="summaryConcerns">-</span>
+                    </div>
+                </div>
+            </div>
+            
+            <h3 style="margin-bottom: 20px;">Recommended Products</h3>
+            <div id="productList"></div>
+            
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="resetConsultation()">Start Over</button>
+                <button class="btn btn-primary">Continue Shopping</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // User data storage
+        const userData = {
+            age: '',
+            gender: '',
+            skinType: '',
+            skinTone: '',
+            sensitivity: '',
+            sunExposure: '',
+            state: '',
+            concerns: [],
+            beautyRoutine: '',
+            productPreference: '',
+            photo: null
+        };
+        
+        // Product database
+        const products = [
+            { id: 1, name: 'Hydrating Serum', category: 'Serum', concerns: ['dryness', 'hydration', 'dullness'], skinTypes: ['dry', 'normal', 'combination'], ageRanges: ['all'], price: 45 },
+            { id: 2, name: 'Acne Control Treatment', category: 'Treatment', concerns: ['acne', 'oily'], skinTypes: ['oily', 'combination'], ageRanges: ['18-25', '26-35', '36-45'], price: 38 },
+            { id: 3, name: 'Anti-Aging Retinol Cream', category: 'Moisturizer', concerns: ['aging', 'wrinkles'], skinTypes: ['dry', 'normal', 'combination'], ageRanges: ['36-45', '46-55', '56-65', '66+'], price: 68 },
+            { id: 4, name: 'Vitamin C Brightening Serum', category: 'Serum', concerns: ['dullness', 'aging'], skinTypes: ['all'], ageRanges: ['all'], price: 52 },
+            { id: 5, name: 'Gentle Soothing Cleanser', category: 'Cleanser', concerns: ['sensitive', 'redness', 'dry-itchy'], skinTypes: ['sensitive', 'dry', 'normal'], ageRanges: ['all'], price: 28 },
+            { id: 6, name: 'Oil Control Mattifying Gel', category: 'Moisturizer', concerns: ['oily', 'acne'], skinTypes: ['oily', 'combination'], ageRanges: ['18-25', '26-35', '36-45'], price: 35 },
+            { id: 7, name: 'Age Defense Night Cream', category: 'Treatment', concerns: ['aging', 'dryness'], skinTypes: ['normal', 'dry', 'combination'], ageRanges: ['46-55', '56-65', '66+'], price: 72 },
+            { id: 8, name: 'Calming Redness Relief Serum', category: 'Serum', concerns: ['redness', 'sensitive'], skinTypes: ['sensitive', 'all'], ageRanges: ['all'], price: 42 },
+            { id: 9, name: 'Deep Hydration Moisture Boost', category: 'Moisturizer', concerns: ['dryness', 'hydration'], skinTypes: ['dry', 'combination'], ageRanges: ['all'], price: 48 },
+            { id: 10, name: 'Firming Peptide Complex', category: 'Serum', concerns: ['aging'], skinTypes: ['all'], ageRanges: ['36-45', '46-55', '56-65', '66+'], price: 78 },
+            { id: 11, name: 'Nourishing Facial Oil', category: 'Oil', concerns: ['dryness', 'aging'], skinTypes: ['dry', 'normal'], ageRanges: ['36-45', '46-55', '56-65', '66+'], price: 55 },
+            { id: 12, name: 'Blemish Control Spot Treatment', category: 'Treatment', concerns: ['acne'], skinTypes: ['oily', 'combination'], ageRanges: ['18-25', '26-35', '36-45'], price: 32 },
+            { id: 13, name: 'Barrier Repair Cream', category: 'Moisturizer', concerns: ['dry-itchy', 'sensitive', 'redness'], skinTypes: ['sensitive', 'dry'], ageRanges: ['all'], price: 58 },
+            { id: 14, name: 'Radiance Boosting Essence', category: 'Essence', concerns: ['dullness', 'hydration'], skinTypes: ['all'], ageRanges: ['all'], price: 46 }
+        ];
+        
+        let currentStep = 0;
+        
+        function goToStep(step) {
+            // Hide current step
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            
+            // Show new step
+            currentStep = step;
+            document.getElementById(`step${currentStep}`).classList.add('active');
+            
+            // Update progress
+            updateProgress();
+            
+            // If going to results, generate recommendations
+            if (step === 4) {
+                displayResults();
+            }
+        }
+        
+        function updateProgress() {
+            const progress = (currentStep / 4) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            
+            if (currentStep > 0 && currentStep < 4) {
+                document.getElementById('stepIndicator').textContent = `Step ${currentStep} of 3`;
+            } else {
+                document.getElementById('stepIndicator').textContent = '';
+            }
+        }
+        
+        function selectOption(field, value, button) {
+            // Remove selected class from siblings
+            const siblings = button.parentElement.querySelectorAll('.option-btn');
+            siblings.forEach(btn => btn.classList.remove('selected'));
+            
+            // Add selected class to clicked button
+            button.classList.add('selected');
+            
+            // Update user data
+            userData[field] = value;
+            
+            // Check if step 1 is complete (now includes gender and state)
+            checkStep1Validation();
+            
+            // Check if step 2 requirements are met
+            if (field === 'sensitivity' || field === 'sunExposure' || field === 'beautyRoutine' || field === 'productPreference') {
+                checkStep2Validation();
+            }
+        }
+        
+        function checkStep1Validation() {
+            const canProceed = userData.age && userData.gender && userData.state && userData.skinType && userData.skinTone;
+            document.getElementById('step1Next').disabled = !canProceed;
+        }
+        
+        function checkStep2Validation() {
+            const canProceed = userData.sensitivity && userData.sunExposure && 
+                               userData.concerns.length > 0 && userData.beautyRoutine && userData.productPreference;
+            document.getElementById('step2Next').disabled = !canProceed;
+        }
+        
+        function toggleConcern(concern, checkbox) {
+            const label = checkbox.parentElement;
+            
+            if (checkbox.checked) {
+                userData.concerns.push(concern);
+                label.classList.add('selected');
+            } else {
+                userData.concerns = userData.concerns.filter(c => c !== concern);
+                label.classList.remove('selected');
+            }
+            
+            // Update counter
+            const count = userData.concerns.length;
+            document.getElementById('concernCount').textContent = `${count} concern${count !== 1 ? 's' : ''} selected`;
+            
+            // Check step 2 validation
+            checkStep2Validation();
+        }
+        
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    userData.photo = e.target.result;
+                    const preview = document.getElementById('previewImage');
+                    preview.src = e.target.result;
+                    preview.classList.add('show');
+                    document.getElementById('uploadArea').classList.add('has-image');
+                    document.getElementById('step3Next').disabled = false;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        function displayResults() {
+            // Update summary
+            document.getElementById('summaryAge').textContent = userData.age;
+            document.getElementById('summaryGender').textContent = userData.gender === 'prefer-not-to-say' ? 'Prefer Not to Say' : (userData.gender === 'non-binary' ? 'Non-Binary' : userData.gender.charAt(0).toUpperCase() + userData.gender.slice(1));
+            document.getElementById('summaryState').textContent = userData.state || '-';
+            document.getElementById('summarySkinType').textContent = userData.skinType.charAt(0).toUpperCase() + userData.skinType.slice(1);
+            document.getElementById('summarySkinTone').textContent = userData.skinTone.charAt(0).toUpperCase() + userData.skinTone.slice(1);
+            document.getElementById('summarySensitivity').textContent = userData.sensitivity.replace(/-/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+            
+            // Format sun exposure
+            let sunExposureText = userData.sunExposure;
+            if (sunExposureText === 'maximum') sunExposureText = 'As much as possible';
+            else if (sunExposureText === 'protected') sunExposureText = 'Enjoy sunshine with protection';
+            else if (sunExposureText === 'limited') sunExposureText = 'Limited exposure';
+            document.getElementById('summarySunExposure').textContent = sunExposureText;
+            
+            // Format beauty routine
+            let beautyRoutineText = userData.beautyRoutine;
+            if (beautyRoutineText === 'quick-simple') beautyRoutineText = 'Quick and simple';
+            else if (beautyRoutineText === 'low-maintenance') beautyRoutineText = 'Low maintenance';
+            else if (beautyRoutineText === 'dedicated') beautyRoutineText = 'Dedicated';
+            document.getElementById('summaryBeautyRoutine').textContent = beautyRoutineText;
+            
+            // Format product preference
+            let productPrefText = userData.productPreference;
+            if (productPrefText === 'lightweight') productPrefText = 'Lightweight lotion/gel';
+            else if (productPrefText === 'creamy') productPrefText = 'Creamy';
+            else if (productPrefText === 'rich-thick') productPrefText = 'Rich thick';
+            else if (productPrefText === 'oil') productPrefText = 'Oil';
+            document.getElementById('summaryProductPreference').textContent = productPrefText;
+            
+            document.getElementById('summaryConcerns').textContent = userData.concerns.slice(0, 3).join(', ');
+            
+            // Calculate product matches
+            // Add age-based concerns
+            let effectiveConcerns = [...userData.concerns];
+            
+            // Auto-add aging concern for users 46+
+            const ageValue = parseInt(userData.age.split('-')[0]) || 0;
+            if (ageValue >= 46 && !effectiveConcerns.includes('aging')) {
+                effectiveConcerns.push('aging');
+            }
+            
+            const matchedProducts = products.map(product => {
+                let score = 0;
+                
+                // Match skin type (30 points)
+                if (product.skinTypes.includes(userData.skinType) || product.skinTypes.includes('all')) {
+                    score += 30;
+                }
+                
+                // Match concerns (40 points per matching concern)
+                const matchedConcerns = product.concerns.filter(c => effectiveConcerns.includes(c));
+                score += matchedConcerns.length * 40;
+                
+                // Age appropriateness bonus (20 points)
+                if (product.ageRanges.includes(userData.age) || product.ageRanges.includes('all')) {
+                    score += 20;
+                }
+                
+                // CRITICAL: Filter out products with NO matching concerns
+                const hasRelevantConcern = matchedConcerns.length > 0;
+                const isAgeAppropriate = product.ageRanges.includes(userData.age) || product.ageRanges.includes('all');
+                const matchesSkinType = product.skinTypes.includes(userData.skinType) || product.skinTypes.includes('all');
+                
+                // Only keep if it has at least one matching concern
+                if (!hasRelevantConcern) {
+                    return null; // Filter out irrelevant products
+                }
+                
+                return { ...product, matchScore: score, matchedConcerns };
+            })
+            .filter(p => p !== null) // Remove filtered products
+            .sort((a, b) => b.matchScore - a.matchScore)
+            .slice(0, 6);
+            
+            // Display products
+            const productList = document.getElementById('productList');
+            productList.innerHTML = '';
+            
+            matchedProducts.forEach((product, index) => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                
+                const concernTags = product.matchedConcerns
+                    .map(c => `<span class="concern-tag">✓ ${c}</span>`)
+                    .join('');
+                
+                card.innerHTML = `
+                    <div class="match-badge">${index === 0 ? '⭐ Top Match' : `#${index + 1} Match`} - ${product.matchScore}% Match</div>
+                    <div class="product-header">
+                        <div>
+                            <div class="product-title">${product.name}</div>
+                            <div class="product-category">${product.category}</div>
+                        </div>
+                        <div class="product-price">$${product.price}</div>
+                    </div>
+                    <div class="product-concerns">${concernTags}</div>
+                    <button class="btn btn-primary" style="margin-top: 15px; width: 100%;">Add to Cart</button>
+                `;
+                
+                productList.appendChild(card);
+            });
+        }
+        
+        function resetConsultation() {
+            userData.age = '';
+            userData.gender = '';
+            userData.skinType = '';
+            userData.skinTone = '';
+            userData.sensitivity = '';
+            userData.sunExposure = '';
+            userData.state = '';
+            userData.concerns = [];
+            userData.beautyRoutine = '';
+            userData.productPreference = '';
+            userData.photo = null;
+            
+            // Reset all selections
+            document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected'));
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                cb.checked = false;
+                cb.parentElement.classList.remove('selected');
+            });
+            
+            // Reset state input
+            document.getElementById('stateInput').value = '';
+            
+            // Reset image
+            document.getElementById('previewImage').classList.remove('show');
+            document.getElementById('uploadArea').classList.remove('has-image');
+            
+            // Reset concern counter
+            document.getElementById('concernCount').textContent = '0 concerns selected';
+            
+            // Disable buttons
+            document.getElementById('step1Next').disabled = true;
+            document.getElementById('step2Next').disabled = true;
+            document.getElementById('step3Next').disabled = true;
+            
+            // Go back to start
+            goToStep(0);
+        }
+        
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>
